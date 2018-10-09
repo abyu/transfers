@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
     val server = embeddedServer(Netty, port = 8080) {
         routing {
             get("/health") {
-                call.respondText("""{"status" : "UP"}""", ContentType.Application.Json)
+                call.respondText("""{"status": "UP"}""", ContentType.Application.Json)
             }
         }
     }

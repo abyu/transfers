@@ -19,12 +19,19 @@ buildscript {
     }
 }
 
+task integrationTest(type: Test){
+    include '**/integrationTests/**'
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     compile "io.ktor:ktor-server-netty:$ktorVersion"
 
     testCompile 'junit:junit:4.12'
+    testCompile 'khttp:khttp:0.1.0'
+    testCompile "io.ktor:ktor-server-test-host:$ktorVersion"
+    testCompile 'com.willowtreeapps.assertk:assertk-jvm:0.12'
 }
 
 repositories {
