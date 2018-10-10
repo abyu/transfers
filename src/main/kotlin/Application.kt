@@ -1,8 +1,17 @@
 package org.skk
 
+import com.fasterxml.jackson.core.JsonParseException
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import io.ktor.application.Application
 import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.jackson
+import io.ktor.response.respond
 import io.ktor.routing.get
+import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -14,6 +23,7 @@ import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.skk.database.getAllTables
 import org.skk.resources.Health
+import org.skk.resources.Transfer
 
 class Application(private val config: Config) {
 
@@ -42,10 +52,29 @@ class Application(private val config: Config) {
 
 fun Application.main() {
     val health = Health()
+    val transfer = Transfer()
+
+    install(ContentNegotiation) {
+        jackson {
+        }
+    }
+
+    install(StatusPages) {
+        exception<JsonParseException> {
+            call.respond(HttpStatusCode.BadRequest, "The request cannot be parsed to a valid json")
+        }
+
+        exception<InvalidFormatException> {
+            call.respond(HttpStatusCode.BadRequest, "The request cannot be parsed to a valid json")
+        }
+    }
 
     routing {
         get("/health") {
             health.get(call)
+        }
+        post("/transfer") {
+            transfer.post(call)
         }
     }
 }
