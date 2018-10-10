@@ -1,8 +1,7 @@
 package org.skk
 
+import io.ktor.application.Application
 import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
@@ -14,6 +13,7 @@ import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.skk.database.getAllTables
+import org.skk.resources.Health
 
 class Application(private val config: Config) {
 
@@ -26,13 +26,7 @@ class Application(private val config: Config) {
 
     private fun setUpServer(): NettyApplicationEngine {
 
-        return embeddedServer(Netty, port = config.appPort) {
-            routing {
-                get("/health") {
-                    call.respondText("""{"status": "UP"}""", ContentType.Application.Json)
-                }
-            }
-        }
+        return embeddedServer(Netty, module = Application::main, port = config.appPort)
     }
 
     private fun setUpDataBaseInContext() {
@@ -42,6 +36,16 @@ class Application(private val config: Config) {
         transaction {
             addLogger(StdOutSqlLogger)
             SchemaUtils.create(*getAllTables())
+        }
+    }
+}
+
+fun Application.main() {
+    val health = Health()
+
+    routing {
+        get("/health") {
+            health.get(call)
         }
     }
 }
