@@ -7,15 +7,31 @@ import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.server.netty.NettyApplicationEngine
+import org.jetbrains.exposed.sql.Database
 
-fun main(args: Array<String>) {
-    val server = embeddedServer(Netty, port = 8080) {
-        routing {
-            get("/health") {
-                call.respondText("""{"status": "UP"}""", ContentType.Application.Json)
+class Application(private val config: Config) {
+
+    fun init() {
+        setUpDataBaseInContext()
+        val server = setUpServer()
+
+        server.start(wait = true)
+    }
+
+    private fun setUpServer(): NettyApplicationEngine {
+
+        return embeddedServer(Netty, port = config.appPort) {
+            routing {
+                get("/health") {
+                    call.respondText("""{"status": "UP"}""", ContentType.Application.Json)
+                }
             }
         }
     }
 
-    server.start(wait = true)
+    private fun setUpDataBaseInContext() {
+        val databaseConfig = config.databaseConfig
+        Database.connect(databaseConfig.connectionString, driver = databaseConfig.driver)
+    }
 }
