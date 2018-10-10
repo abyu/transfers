@@ -25,11 +25,14 @@ class TransferParams {
     }
 }
 
-fun paymentTransaction(block : TransferParams.() -> TransferParams) {
+fun paymentTransaction(block : TransferParams.() -> TransferParams): TransactionStatus {
     val transferParams = block(TransferParams())
 
     transferParams.let{
-        it.fromAccount.debit(transferParams.amount)
-        it.toAccount.credit(transferParams.amount)
+        val status = it.fromAccount.debit(transferParams.amount)
+        if (status.status == "SUCCESS") {
+            it.toAccount.credit(transferParams.amount)
+        }
+        return status
     }
 }

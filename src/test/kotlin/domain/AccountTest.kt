@@ -30,4 +30,16 @@ class AccountTest {
         assert(account.getBalance()).isEqualTo(BigDecimal("50"))
     }
 
+    @Test
+    fun `debit fails when the requested amount is less than the available balance`() {
+        val account = Account(
+                name = "a person"
+        )
+        account.credit(BigDecimal("100"))
+
+        val status = account.debit(BigDecimal("200"))
+
+        assert(status.status).isEqualTo("FAILED")
+        assert(status.reason).isEqualTo("Insufficient funds")
+    }
 }
