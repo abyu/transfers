@@ -7,7 +7,7 @@ import java.math.BigDecimal
 
 class Transfer(private val vault: Vault) {
 
-    @Transactional(type = TxType.REQUIRES_NEW, rollbackFor = [TransferFailedException::class])
+    @Transactional(type = TxType.REQUIRES_NEW, rollbackFor = [Exception::class])
     fun forParams(transferParams: TransferParams): TransactionStatus {
 
         val debitTransaction = DebitTransaction(transferParams.senderAccountId, transactionAmount = transferParams.amount)
