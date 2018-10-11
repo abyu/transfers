@@ -1,5 +1,15 @@
+ddl:
+  migration:
+    generate: true
+    run: true
+
 ebean:
-  #    shutdown: stop # stop | remove
-  platform: h2 # h2, postgres, mysql, oracle, sqlserver, sqlite
-  ddlMode: dropCreate # none | dropCreate | create | migration | createOnly | migrationDropCreate
-  dbName: transfers
+  migration:
+    run: true
+
+datasource:
+  db:
+    username: sa
+    password: ''
+    databaseUrl: jdbc:h2:mem:regular
+    databaseDriver: org.h2.Driver

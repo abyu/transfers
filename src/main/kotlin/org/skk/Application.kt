@@ -3,6 +3,9 @@ package org.skk
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
+import io.ebean.Ebean
+import io.ebean.EbeanServerFactory
+import io.ebean.config.ServerConfig
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -34,7 +37,13 @@ class Application(private val config: Config) {
     }
 
     private fun setUpDataBaseInContext() {
-        val databaseConfig = config.databaseConfig
+        val serverConfig = ServerConfig()
+        serverConfig.loadFromProperties()
+        serverConfig.isDefaultServer = true
+
+        EbeanServerFactory.create(serverConfig)
+
+        Ebean.getDefaultServer()
     }
 }
 
