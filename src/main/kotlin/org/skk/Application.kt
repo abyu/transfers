@@ -17,9 +17,7 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
-import org.skk.resource.Accounts
-import org.skk.resource.Health
-import org.skk.resource.Transfer
+import org.skk.service.AccountCreationException
 
 class Application(private val config: Config) {
 
@@ -61,6 +59,10 @@ fun Application.main() {
 
         exception<MissingKotlinParameterException> {
             call.respond(HttpStatusCode.BadRequest, "The request cannot be parsed to a valid json")
+        }
+
+        exception<AccountCreationException> {
+            call.respond(HttpStatusCode.InternalServerError, "Failed while trying to create an account, error: ${it.msg} ")
         }
     }
 

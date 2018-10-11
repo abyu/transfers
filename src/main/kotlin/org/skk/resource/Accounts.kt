@@ -5,17 +5,18 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import org.skk.domain.AccountEntity
+import org.skk.service.Account
+import org.skk.service.Vault
 import java.math.BigDecimal
 
-class Accounts {
+class Accounts(private val account: Account) {
 
     suspend fun post(call: ApplicationCall) {
         val accountRequest = call.receive<AccountRequest>()
 
-        val accountEntity = AccountEntity(name = accountRequest.name)
-        accountEntity.save()
+        val newAccountId = account.createNew(accountRequest.name, accountRequest.initialAmount)
 
-        call.respond(HttpStatusCode.Created)
+        call.respond(HttpStatusCode.Created, """{"accountId": "$newAccountId"}""")
     }
 }
 
