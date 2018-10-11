@@ -19,7 +19,7 @@ class DebitTransactionTest {
 
     @Test
     fun `debit transaction debits the amount from the given vault amount`() {
-        val debitTransaction = DebitTransaction(accountId=1, transactionAmount=BigDecimal("100"))
+        val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = BigDecimal("100"))
 
         val status = debitTransaction.execute(BigDecimal("200"))
 
@@ -29,7 +29,7 @@ class DebitTransactionTest {
 
     @Test
     fun `debit transaction returns failure result when the amount is more than the given vault amount`() {
-        val debitTransaction = DebitTransaction(accountId=1, transactionAmount=BigDecimal("400"))
+        val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = BigDecimal("400"))
 
         val originalVaultAmount = BigDecimal("200")
         val status: TransactionStatus = debitTransaction.execute(originalVaultAmount)
@@ -45,7 +45,7 @@ class DebitTransactionTest {
         every { mockEbeanServer.save(capture(slot)) } just runs
 
         MockiEbean.runWithMock(mockEbeanServer) {
-            val debitTransaction = DebitTransaction(accountId=1, transactionAmount=BigDecimal("100"))
+            val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = BigDecimal("100"))
 
             val status = debitTransaction.execute(BigDecimal("200"))
 

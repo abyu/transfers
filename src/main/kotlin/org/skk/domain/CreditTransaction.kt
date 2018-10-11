@@ -2,8 +2,8 @@ package org.skk.domain
 
 import java.math.BigDecimal
 
-class CreditTransaction(private val accountId: Long, private val transactionAmount: BigDecimal) {
-    fun execute(vaultAmount: BigDecimal): TransactionStatus {
+class CreditTransaction(override val accountId: Long, private val transactionAmount: BigDecimal) : TransactionOperation {
+    override fun execute(vaultAmount: BigDecimal): TransactionStatus {
 
         val transactionStatus = SuccessTransaction(vaultAmount + transactionAmount)
 
@@ -16,5 +16,9 @@ class CreditTransaction(private val accountId: Long, private val transactionAmou
 
         return transactionStatus
     }
+}
 
+interface TransactionOperation {
+    val accountId: Long
+    fun execute(vaultAmount: BigDecimal) : TransactionStatus
 }

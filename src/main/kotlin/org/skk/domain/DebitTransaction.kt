@@ -14,8 +14,8 @@ class Transaction(@Id val id: Long = 0,
                   val amount: BigDecimal,
                   val status: String) : Model()
 
-class DebitTransaction(val accountId: Long, val transactionAmount: BigDecimal) {
-    fun execute(vaultAmount: BigDecimal): TransactionStatus {
+class DebitTransaction(override val accountId: Long, val transactionAmount: BigDecimal) : TransactionOperation {
+    override fun execute(vaultAmount: BigDecimal): TransactionStatus {
 
         val result = transactionAmount.takeIf { it <= vaultAmount }?.let {
             SuccessTransaction(resultingAmount = vaultAmount - it)
@@ -29,6 +29,11 @@ class DebitTransaction(val accountId: Long, val transactionAmount: BigDecimal) {
 }
 
 class SuccessTransaction(private val resultingAmount: BigDecimal) : TransactionStatus {
+    override fun whenSuccess(block: () -> Unit): TransactionStatus {
+        block()
+        return this
+    }
+
     override fun status(): String = "SUCCESS"
 
     override fun isSuccess() = true
@@ -39,6 +44,10 @@ class SuccessTransaction(private val resultingAmount: BigDecimal) : TransactionS
 }
 
 class FailedTransaction(private val reason: String) : TransactionStatus {
+    override fun whenSuccess(block: () -> Unit): TransactionStatus {
+        return this
+    }
+
     override fun status() = "FAILED"
 
     override fun isSuccess() = false

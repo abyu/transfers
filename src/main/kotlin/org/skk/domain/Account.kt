@@ -1,7 +1,6 @@
 package org.skk.domain
 
 import io.ebean.Model
-import org.skk.database.AccountEntity
 import java.math.BigDecimal
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -19,5 +18,6 @@ interface TransactionStatus {
     fun resultAmount(): BigDecimal
     fun failureReason(): String
     fun status(): String
+    fun whenSuccess(block: ()-> Unit): TransactionStatus
 }
 

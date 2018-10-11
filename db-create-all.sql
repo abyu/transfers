@@ -13,3 +13,10 @@ create table transactions (
   constraint pk_transactions primary key (id)
 );
 
+create table vault (
+  id                            bigint auto_increment not null,
+  account_id                    bigint not null,
+  amount                        decimal(38) not null,
+  constraint pk_vault primary key (id)
+);
+
