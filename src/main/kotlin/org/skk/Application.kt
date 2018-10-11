@@ -22,8 +22,8 @@ import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.skk.database.getAllTables
-import org.skk.resources.Health
-import org.skk.resources.Transfer
+import org.skk.resource.Health
+import org.skk.resource.Transfer
 
 class Application(private val config: Config) {
 

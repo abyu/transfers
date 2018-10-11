@@ -1,4 +1,4 @@
-package org.skk.resources
+package org.skk.resource
 
 import assertk.all
 import assertk.assertions.isEqualTo

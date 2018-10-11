@@ -1,4 +1,4 @@
-package org.skk.resources
+package org.skk.resource
 
 import io.ktor.application.ApplicationCall
 import io.ktor.http.ContentType
