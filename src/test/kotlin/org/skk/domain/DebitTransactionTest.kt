@@ -15,7 +15,7 @@ import io.mockk.slot
 import org.junit.Test
 import java.math.BigDecimal
 
-class TransactionTest {
+class DebitTransactionTest {
 
     @Test
     fun `debit transaction debits the amount from the given vault amount`() {
@@ -51,11 +51,12 @@ class TransactionTest {
 
             assert(slot.isCaptured).isTrue()
             assert(slot.captured).all {
-                assert(actual.accountId).isEqualTo(1)
-                assert(actual.status).isEqualTo("SUCCESS")
+                assert(actual.accountId).isEqualTo(1L)
+                assert(actual.status).isEqualTo(status.status())
                 assert(actual.amount).isEqualTo(BigDecimal("100"))
-                assert(actual.transactionType).isEqualTo(status.status())
+                assert(actual.transactionType).isEqualTo("DEBIT")
             }
         }
     }
 }
+

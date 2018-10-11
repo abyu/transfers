@@ -7,7 +7,7 @@ create table account (
 create table transactions (
   id                            bigint auto_increment not null,
   transaction_type              varchar(255) not null,
-  account_id                    integer not null,
+  account_id                    bigint not null,
   amount                        decimal(38) not null,
   status                        varchar(255) not null,
   constraint pk_transactions primary key (id)

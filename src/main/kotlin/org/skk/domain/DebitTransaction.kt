@@ -10,11 +10,11 @@ import javax.persistence.Table
 @Table(name = "transactions")
 class Transaction(@Id val id: Long = 0,
                   val transactionType: String,
-                  val accountId: Int,
+                  val accountId: Long,
                   val amount: BigDecimal,
                   val status: String) : Model()
 
-class DebitTransaction(val accountId: Int, val transactionAmount: BigDecimal) {
+class DebitTransaction(val accountId: Long, val transactionAmount: BigDecimal) {
     fun execute(vaultAmount: BigDecimal): TransactionStatus {
 
         val result = transactionAmount.takeIf { it <= vaultAmount }?.let {
