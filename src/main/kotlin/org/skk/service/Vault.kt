@@ -11,8 +11,8 @@ class Vault {
             val status = transactionOperation.execute(it.amount)
 
             status.whenSuccess {
-                it.updateAmount(status.resultAmount())
-                it.save()
+                vaultEntry.updateAmount(status.resultAmount())
+                vaultEntry.save()
             }
 
         } ?: FailedTransaction("No vault with $accountId exists")
