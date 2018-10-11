@@ -2,12 +2,16 @@ package integrationTests.service
 
 import assertk.assert
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
 import io.ebean.Ebean
 import org.junit.Test
+import org.skk.domain.Account
 import org.skk.service.CreditTransaction
 import org.skk.service.DebitTransaction
 import org.skk.service.Vault
 import org.skk.domain.VaultEntry
+import org.skk.service.TransactionStatus
 import java.math.BigDecimal
 
 class VaultTest {
@@ -67,6 +71,37 @@ class VaultTest {
             val updatedVaultEntry = VaultEntry.byId(it.id)
             assert(transactionStatus.status()).isEqualTo("SUCCESS")
             assert(updatedVaultEntry?.amount).isEqualTo(BigDecimal("300"))
+        }
+    }
+
+    @Test
+    fun `setup a vault for the given account id with given amount`() {
+        val vault = Vault()
+        val accountEntry = Account(name = "Nemo")
+        withDbEntries(listOf(accountEntry)) {
+            vault.setUpFor(accountId = accountEntry.id, initialAmount = BigDecimal("200"))
+
+            val vaultEntry = VaultEntry.findByAccountId(accountId = accountEntry.id)
+
+            assert(vaultEntry).isNotNull()
+            assert(vaultEntry?.amount).isEqualTo(BigDecimal("200"))
+        }
+    }
+
+    @Test
+    fun `do nothing when the vault already exists`() {
+        val vault = Vault()
+        val accountEntry = Account(name = "Nemo")
+        Ebean.save(accountEntry)
+        val vaultEntry = VaultEntry(accountId = accountEntry.id, amount = BigDecimal("200"))
+
+        withDbEntries(listOf(accountEntry, vaultEntry)) {
+            vault.setUpFor(accountId = accountEntry.id, initialAmount = BigDecimal("800"))
+
+            val vaultEntry = VaultEntry.findByAccountId(accountId = accountEntry.id)
+
+            assert(vaultEntry).isNotNull()
+            assert(vaultEntry?.amount).isEqualTo(BigDecimal("200"))
         }
     }
 

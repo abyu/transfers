@@ -7,6 +7,8 @@ import javax.persistence.Table
 
 @Entity
 @Table(name="account")
-class Account(@Id val id: Int, val name: String) : Model() {
+data class Account(
+        @Id val id: Long = 0,
+        val name: String
+       ) : Model()
 
-}

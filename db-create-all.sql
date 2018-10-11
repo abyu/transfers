@@ -1,5 +1,5 @@
 create table account (
-  id                            integer auto_increment not null,
+  id                            bigint auto_increment not null,
   name                          varchar(255) not null,
   constraint pk_account primary key (id)
 );

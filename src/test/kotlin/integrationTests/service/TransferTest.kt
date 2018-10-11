@@ -74,13 +74,13 @@ class TransferTest {
             assert(updatedSenderVault?.amount).isEqualTo(BigDecimal("400"))
         }
     }
+}
 
-    private fun withDbEntries(entries: List<VaultEntry>, block: () -> Unit) {
-        Ebean.saveAll(entries)
-        try {
-            block()
-        } finally {
-            Ebean.deleteAll(entries)
-        }
+fun withDbEntries(entries: List<Any>, block: () -> Unit) {
+    Ebean.saveAll(entries)
+    try {
+        block()
+    } finally {
+        Ebean.deleteAll(entries)
     }
 }

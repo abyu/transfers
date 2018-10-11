@@ -16,7 +16,6 @@ data class VaultEntry(
     var amount: BigDecimal) : Model() {
 
     fun updateAmount(amount: BigDecimal) {
-
        this.amount = amount
     }
     companion object Find: VaultFinder()
