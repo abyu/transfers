@@ -4,9 +4,9 @@ import assertk.assert
 import assertk.assertions.isEqualTo
 import io.ebean.Ebean
 import org.junit.Test
-import org.skk.domain.CreditTransaction
-import org.skk.domain.DebitTransaction
-import org.skk.domain.Vault
+import org.skk.service.CreditTransaction
+import org.skk.service.DebitTransaction
+import org.skk.service.Vault
 import org.skk.domain.VaultEntry
 import java.math.BigDecimal
 

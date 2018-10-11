@@ -1,6 +1,6 @@
-package org.skk.domain
+package org.skk.service
 
-import java.math.BigDecimal
+import org.skk.domain.VaultEntry
 
 class Vault {
     fun execute(transactionOperation: TransactionOperation): TransactionStatus {

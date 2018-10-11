@@ -13,6 +13,8 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.slot
 import org.junit.Test
+import org.skk.service.DebitTransaction
+import org.skk.service.TransactionStatus
 import java.math.BigDecimal
 
 class DebitTransactionTest {
