@@ -41,9 +41,9 @@ class Application(private val config: Config) {
 }
 
 fun Application.main() {
-    val health = Health()
-    val transfer = Transfer()
-    val account = Accounts()
+    val health = DependencyProvider.healthResource()
+    val transfer = DependencyProvider.transferResource()
+    val account = DependencyProvider.accountsResource()
 
     install(ContentNegotiation) {
         jackson {
