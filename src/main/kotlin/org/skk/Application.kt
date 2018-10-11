@@ -2,6 +2,7 @@ package org.skk
 
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -16,6 +17,7 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
+import org.skk.resource.Accounts
 import org.skk.resource.Health
 import org.skk.resource.Transfer
 
@@ -41,6 +43,7 @@ class Application(private val config: Config) {
 fun Application.main() {
     val health = Health()
     val transfer = Transfer()
+    val account = Accounts()
 
     install(ContentNegotiation) {
         jackson {
@@ -55,6 +58,10 @@ fun Application.main() {
         exception<InvalidFormatException> {
             call.respond(HttpStatusCode.BadRequest, "The request cannot be parsed to a valid json")
         }
+
+        exception<MissingKotlinParameterException> {
+            call.respond(HttpStatusCode.BadRequest, "The request cannot be parsed to a valid json")
+        }
     }
 
     routing {
@@ -63,6 +70,9 @@ fun Application.main() {
         }
         post("/transfer") {
             transfer.post(call)
+        }
+        post("/accounts") {
+            account.post(call)
         }
     }
 }

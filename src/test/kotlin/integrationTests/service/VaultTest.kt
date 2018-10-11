@@ -2,16 +2,14 @@ package integrationTests.service
 
 import assertk.assert
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import io.ebean.Ebean
 import org.junit.Test
-import org.skk.domain.Account
+import org.skk.domain.AccountEntity
 import org.skk.service.CreditTransaction
 import org.skk.service.DebitTransaction
 import org.skk.service.Vault
 import org.skk.domain.VaultEntry
-import org.skk.service.TransactionStatus
 import java.math.BigDecimal
 
 class VaultTest {
@@ -77,7 +75,7 @@ class VaultTest {
     @Test
     fun `setup a vault for the given account id with given amount`() {
         val vault = Vault()
-        val accountEntry = Account(name = "Nemo")
+        val accountEntry = AccountEntity(name = "Nemo")
         withDbEntries(listOf(accountEntry)) {
             vault.setUpFor(accountId = accountEntry.id, initialAmount = BigDecimal("200"))
 
@@ -91,7 +89,7 @@ class VaultTest {
     @Test
     fun `do nothing when the vault already exists`() {
         val vault = Vault()
-        val accountEntry = Account(name = "Nemo")
+        val accountEntry = AccountEntity(name = "Nemo")
         Ebean.save(accountEntry)
         val vaultEntry = VaultEntry(accountId = accountEntry.id, amount = BigDecimal("200"))
 

@@ -7,17 +7,17 @@ import java.math.BigDecimal
 class TransferParams {
     var transfer = this
 
-    lateinit var fromAccount: Account
-    lateinit var toAccount: Account
+    lateinit var fromAccount: AccountEntity
+    lateinit var toAccount: AccountEntity
     lateinit var amount: BigDecimal
 
-    infix fun from(account: Account): TransferParams {
-        fromAccount = account
+    infix fun from(accountEntity: AccountEntity): TransferParams {
+        fromAccount = accountEntity
         return this
 
     }
-    infix fun to(account: Account): TransferParams {
-        toAccount = account
+    infix fun to(accountEntity: AccountEntity): TransferParams {
+        toAccount = accountEntity
         return this
 
     }
