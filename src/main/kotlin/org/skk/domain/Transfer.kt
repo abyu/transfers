@@ -33,6 +33,6 @@ fun paymentTransaction(block : TransferParams.() -> TransferParams): Transaction
 //        if (status.status == "SUCCESS") {
 //            it.toAccount.credit(transferParams.amount)
 //        }
-        return TransactionStatus("", "")
+        return SuccessTransaction(BigDecimal.ZERO)
     }
 }
