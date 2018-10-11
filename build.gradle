@@ -40,7 +40,7 @@ dependencies {
     testCompile 'com.willowtreeapps.assertk:assertk-jvm:0.12'
     testCompile 'io.ebean.test:ebean-test-config:11.21.1'
     testCompile group: 'io.ebean', name: 'ebean-mocker', version: '11.18.1'
-    testCompile "io.mockk:mockk:1.8.1"
+    testCompile "io.mockk:mockk:1.8.3"
 }
 
 repositories {
