@@ -1,4 +1,4 @@
-package integrationTests.domain
+package integrationTests.service
 
 import assertk.assert
 import assertk.assertions.isEqualTo

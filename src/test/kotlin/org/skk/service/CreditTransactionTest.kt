@@ -1,4 +1,4 @@
-package org.skk.domain
+package org.skk.service
 
 import assertk.all
 import assertk.assert
@@ -12,8 +12,7 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.slot
 import org.junit.Test
-import org.skk.service.CreditTransaction
-import org.skk.service.TransactionStatus
+import org.skk.domain.Transaction
 import java.math.BigDecimal
 
 class CreditTransactionTest {
