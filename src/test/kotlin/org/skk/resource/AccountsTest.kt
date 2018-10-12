@@ -2,11 +2,13 @@ package org.skk.resource
 
 import assertk.all
 import assertk.assertions.isEqualTo
+import assertk.assertions.isTrue
 import io.ktor.application.Application
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.testing.contentType
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
@@ -38,7 +40,8 @@ class AccountsTest{
             }.response
 
             assertk.assert(response).all {
-                assert(actual.content).isEqualTo("""{"accountId": "2"}""")
+                assert(actual.contentType().match(ContentType.Application.Json.toString())).isTrue()
+                assert(actual.content).isEqualTo("""{"accountId":"2"}""")
                 assert(actual.status()).isEqualTo(HttpStatusCode.Created)
             }
         }
