@@ -97,10 +97,10 @@ class VaultTest {
         withDbEntries(listOf(accountEntry, vaultEntry)) {
             vault.setUpFor(accountId = accountEntry.id, initialAmount = BigDecimal("800"))
 
-            val vaultEntry = VaultEntry.findByAccountId(accountId = accountEntry.id)
+            val dbVaultEntry = VaultEntry.findByAccountId(accountId = accountEntry.id)
 
-            assert(vaultEntry).isNotNull()
-            assert(vaultEntry?.amount).isEqualTo(BigDecimal("200"))
+            assert(dbVaultEntry).isNotNull()
+            assert(dbVaultEntry?.amount).isEqualTo(BigDecimal("200"))
         }
     }
 

@@ -25,6 +25,10 @@ task integrationTest(type: Test){
     include '**/integrationTests/**'
 }
 
+task end2endTest(type: Test) {
+    include '**/end2end/**'
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
@@ -47,5 +51,11 @@ repositories {
     jcenter()
     maven {
         url "https://dl.bintray.com/kotlin/ktor"
+    }
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
     }
 }
