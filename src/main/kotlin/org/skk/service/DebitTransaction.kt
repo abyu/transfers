@@ -10,7 +10,10 @@ class DebitTransaction(override val accountId: Long, val transactionAmount: Mone
             SuccessTransaction(resultingAmount = (vaultAmount minus it).value)
         } ?: FailedTransaction(reason = "Insufficient funds")
 
-        val transaction = Transaction(transactionType = "DEBIT", accountId = accountId, amount = transactionAmount.value, status = result.status())
+        val transaction = Transaction(transactionType = "DEBIT",
+                accountId = accountId,
+                amount = transactionAmount.value,
+                status = result.status())
         transaction.save()
 
         return result

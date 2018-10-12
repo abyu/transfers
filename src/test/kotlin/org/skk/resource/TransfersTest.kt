@@ -17,6 +17,7 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import org.junit.Test
 import org.skk.DependencyProvider
+import org.skk.domain.pounds
 import org.skk.main
 import org.skk.service.FailedTransaction
 import org.skk.service.SuccessTransaction
@@ -31,7 +32,7 @@ class TransfersTest {
         mockkObject(DependencyProvider)
         val mockTransfer = mockk<Transfer>()
         every { DependencyProvider.getTransferService() } returns mockTransfer
-        every { mockTransfer.forParams(TransferParams(1, 4, BigDecimal("100"))) } returns SuccessTransaction(BigDecimal("100"))
+        every { mockTransfer.forParams(TransferParams(1, 4, "100".pounds())) } returns SuccessTransaction(BigDecimal("100"))
 
         withTestApplication(Application::main) {
             val response = handleRequest(HttpMethod.Post, "/transfers") {
@@ -52,7 +53,7 @@ class TransfersTest {
         mockkObject(DependencyProvider)
         val mockTransfer = mockk<Transfer>()
         every { DependencyProvider.getTransferService() } returns mockTransfer
-        every { mockTransfer.forParams(TransferParams(1, 4, BigDecimal("100"))) } returns FailedTransaction("Insufficient funds")
+        every { mockTransfer.forParams(TransferParams(1, 4, "100".pounds())) } returns FailedTransaction("Insufficient funds")
 
         withTestApplication(Application::main) {
             val response = handleRequest(HttpMethod.Post, "/transfers") {

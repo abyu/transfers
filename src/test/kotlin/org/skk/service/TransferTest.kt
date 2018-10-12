@@ -1,17 +1,14 @@
 package org.skk.service
 
-import assertk.all
 import assertk.assertions.isTrue
 import assertk.assert
-import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
-import assertk.assertions.isInstanceOf
 import io.mockk.MockKMatcherScope
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
 import io.mockk.verify
 import org.junit.Test
+import org.skk.domain.pounds
 import java.math.BigDecimal
 
 class TransferTest {
@@ -22,8 +19,8 @@ class TransferTest {
         val transfer = Transfer(vault)
         val senderAccountId = 1L
         val receiverAccountId = 2L
-        val transferAmount = BigDecimal("100")
-        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount)
+        val transferAmount = "100".pounds()
+        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount.value)
 
         val status: TransactionStatus = transfer.forParams(
             TransferParams(
@@ -42,9 +39,9 @@ class TransferTest {
         val transfer = Transfer(vault)
         val senderAccountId = 1L
         val receiverAccountId = 2L
-        val transferAmount = BigDecimal("100")
-        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount)
-        every { vault.execute(creditTransactionMatching(receiverAccountId)) } returns SuccessTransaction(transferAmount)
+        val transferAmount = "100".pounds()
+        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount.value)
+        every { vault.execute(creditTransactionMatching(receiverAccountId)) } returns SuccessTransaction(transferAmount.value)
 
         val status: TransactionStatus = transfer.forParams(
             TransferParams(
@@ -66,7 +63,7 @@ class TransferTest {
         val transfer = Transfer(vault)
         val senderAccountId = 1L
         val receiverAccountId = 2L
-        val transferAmount = BigDecimal("100")
+        val transferAmount = "100".pounds()
         every { vault.execute(debitTransactionMatching(senderAccountId)) } returns FailedTransaction("Insufficient funds")
 
         val status: TransactionStatus = transfer.forParams(

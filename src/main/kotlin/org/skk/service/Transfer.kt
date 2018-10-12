@@ -4,15 +4,14 @@ import io.ebean.annotation.Transactional
 import io.ebean.annotation.TxType
 import org.skk.domain.Money
 import org.skk.exceptions.TransferFailedException
-import java.math.BigDecimal
 
 class Transfer(private val vault: Vault) {
 
     @Transactional(type = TxType.REQUIRES_NEW, rollbackFor = [Exception::class])
     fun forParams(transferParams: TransferParams): TransactionStatus {
 
-        val debitTransaction = DebitTransaction(transferParams.senderAccountId, transactionAmount = Money(transferParams.amount))
-        val creditTransaction = CreditTransaction(transferParams.receiverAccountId, transactionAmount = Money(transferParams.amount))
+        val debitTransaction = DebitTransaction(transferParams.senderAccountId, transactionAmount = transferParams.amount)
+        val creditTransaction = CreditTransaction(transferParams.receiverAccountId, transactionAmount = transferParams.amount)
 
         val debitStatus = vault.execute(debitTransaction)
         debitStatus.whenSuccess { _ ->
@@ -27,4 +26,4 @@ class Transfer(private val vault: Vault) {
     }
 }
 
-data class TransferParams(val senderAccountId: Long, val receiverAccountId: Long, val amount: BigDecimal)
+data class TransferParams(val senderAccountId: Long, val receiverAccountId: Long, val amount: Money)

@@ -6,6 +6,7 @@ import assertk.assertions.isInstanceOf
 import io.ebean.Ebean
 import org.junit.Test
 import org.skk.domain.VaultEntry
+import org.skk.domain.pounds
 import org.skk.service.Transfer
 import org.skk.exceptions.TransferFailedException
 import org.skk.service.TransferParams
@@ -24,7 +25,7 @@ class TransferTest {
             transfer.forParams(TransferParams(
                     senderAccountId = 2,
                     receiverAccountId = 4,
-                    amount = BigDecimal("300")))
+                    amount = "300".pounds()))
 
             val updatedSenderVault = VaultEntry.byId(vaultForSender.id)
             val updatedReceiverVault = VaultEntry.byId(vaultForReceiver.id)
@@ -45,7 +46,7 @@ class TransferTest {
             transfer.forParams(TransferParams(
                     senderAccountId = 2,
                     receiverAccountId = 4,
-                    amount = BigDecimal("700")))
+                    amount = "700".pounds()))
 
             val updatedSenderVault = VaultEntry.byId(vaultForSender.id)
             val updatedReceiverVault = VaultEntry.byId(vaultForReceiver.id)
@@ -66,7 +67,7 @@ class TransferTest {
                 transfer.forParams(TransferParams(
                         senderAccountId = 2,
                         receiverAccountId = 4,
-                        amount = BigDecimal("100")))
+                        amount = "100".pounds()))
             }.thrownError { isInstanceOf(TransferFailedException::class) }
 
             val updatedSenderVault = VaultEntry.byId(vaultForSender.id)

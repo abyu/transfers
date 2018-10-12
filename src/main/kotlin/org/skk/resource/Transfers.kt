@@ -4,6 +4,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import org.skk.domain.Money
 import org.skk.service.Transfer
 import org.skk.service.TransferParams
 import java.math.BigDecimal
@@ -18,7 +19,7 @@ class Transfers(private val transfer: Transfer) {
         val transferParams = request.let {
             TransferParams(senderAccountId = it.sourceAccountId.toLong(),
                     receiverAccountId = it.targetAccountId.toLong(),
-                    amount = it.amount)
+                    amount = Money(it.amount))
         }
 
         val transactionStatus = transfer.forParams(transferParams)
