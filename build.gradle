@@ -29,6 +29,10 @@ task end2endTest(type: Test) {
     include '**/end2end/**'
 }
 
+test {
+    exclude '**/end2end/**'
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"

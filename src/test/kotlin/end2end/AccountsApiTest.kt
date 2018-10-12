@@ -9,7 +9,6 @@ import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
 
-@Ignore("Figure out a way to run this from gradle, startup server manually before running")
 class AccountsApiTest {
 
     private val baseUrl = "http://localhost:8080"

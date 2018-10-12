@@ -10,7 +10,6 @@ import org.junit.Ignore
 import org.junit.Test
 import java.math.BigDecimal
 
-@Ignore("Figure out a way to run this from gradle")
 class TransfersApiTest {
 
     private val baseUrl = "http://localhost:8080"
