@@ -5,6 +5,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import org.skk.domain.Money
+import org.skk.service.TransactionStatus
 import org.skk.service.Transfer
 import org.skk.service.TransferParams
 import java.math.BigDecimal
@@ -24,11 +25,24 @@ class Transfers(private val transfer: Transfer) {
 
         val transactionStatus = transfer.forParams(transferParams)
 
-        transactionStatus.isSuccess().takeIf { it }?.let {
-            call.respond(HttpStatusCode.OK, TransferSuccessResponse())
-        } ?: call.respond(HttpStatusCode.UnprocessableEntity, TransferFailureResponse(reason = transactionStatus.failureReason()))
+        call.respond(transactionStatus.responseCode(), transactionStatus.responseContext())
+    }
+
+    private fun TransactionStatus.responseCode() : HttpStatusCode {
+        return when {
+            isSuccess() -> HttpStatusCode.OK
+            else -> HttpStatusCode.UnprocessableEntity
+        }
+    }
+
+    private fun TransactionStatus.responseContext() : TransferResponse {
+        return when {
+            isSuccess() -> TransferSuccessResponse()
+            else -> TransferFailureResponse(reason = failureReason())
+        }
     }
 }
 
-data class TransferSuccessResponse(val status: String = "Success")
-data class TransferFailureResponse(val status: String = "Failed", val reason: String)
+interface TransferResponse
+data class TransferSuccessResponse(val status: String = "Success"): TransferResponse
+data class TransferFailureResponse(val status: String = "Failed", val reason: String): TransferResponse
