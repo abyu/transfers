@@ -16,7 +16,7 @@ class Vault {
                 vaultEntry.save()
             }
 
-        } ?: FailedTransaction("No vault with $accountId exists")
+        } ?: FailedTransaction("No vault for account with Id: $accountId exists")
 
         return transactionStatus
     }
