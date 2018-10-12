@@ -15,8 +15,8 @@ data class VaultEntry(
     val accountId: Long,
     var amount: BigDecimal) : Model() {
 
-    fun updateAmount(amount: BigDecimal) {
-       this.amount = amount
+    fun updateMoney(money: Money) {
+       this.amount = money.value
     }
     companion object Find: VaultFinder()
 }

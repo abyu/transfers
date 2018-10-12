@@ -2,6 +2,7 @@ package org.skk.service
 
 import org.skk.domain.Money
 import org.skk.domain.VaultEntry
+import org.skk.domain.pounds
 import java.math.BigDecimal
 
 class Vault {
@@ -13,7 +14,7 @@ class Vault {
             val status = transactionOperation.execute(Money(it.amount))
 
             status.whenSuccess {
-                vaultEntry.updateAmount(status.resultAmount())
+                vaultEntry.updateMoney(status.resultAmount())
                 vaultEntry.save()
             }
 
@@ -31,7 +32,7 @@ class Vault {
 
         vaultEntry.save()
 
-        return SuccessTransaction(BigDecimal.ZERO)
+        return SuccessTransaction("0".pounds())
     }
 
     fun getVaultAmount(accountId: Long): BigDecimal? {

@@ -32,7 +32,7 @@ class TransfersTest {
         mockkObject(DependencyProvider)
         val mockTransfer = mockk<Transfer>()
         every { DependencyProvider.getTransferService() } returns mockTransfer
-        every { mockTransfer.forParams(TransferParams(1, 4, "100".pounds())) } returns SuccessTransaction(BigDecimal("100"))
+        every { mockTransfer.forParams(TransferParams(1, 4, "100".pounds())) } returns SuccessTransaction("100".pounds())
 
         withTestApplication(Application::main) {
             val response = handleRequest(HttpMethod.Post, "/transfers") {

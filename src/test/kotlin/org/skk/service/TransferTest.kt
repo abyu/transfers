@@ -20,7 +20,7 @@ class TransferTest {
         val senderAccountId = 1L
         val receiverAccountId = 2L
         val transferAmount = "100".pounds()
-        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount.value)
+        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount)
 
         val status: TransactionStatus = transfer.forParams(
             TransferParams(
@@ -40,8 +40,8 @@ class TransferTest {
         val senderAccountId = 1L
         val receiverAccountId = 2L
         val transferAmount = "100".pounds()
-        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount.value)
-        every { vault.execute(creditTransactionMatching(receiverAccountId)) } returns SuccessTransaction(transferAmount.value)
+        every { vault.execute(debitTransactionMatching(senderAccountId)) } returns SuccessTransaction(transferAmount)
+        every { vault.execute(creditTransactionMatching(receiverAccountId)) } returns SuccessTransaction(transferAmount)
 
         val status: TransactionStatus = transfer.forParams(
             TransferParams(

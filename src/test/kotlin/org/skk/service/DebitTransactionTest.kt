@@ -26,7 +26,7 @@ class DebitTransactionTest {
         val status = debitTransaction.execute("200".pounds())
 
         assert(status.isSuccess()).isTrue()
-        assert(status.resultAmount()).isEqualTo(BigDecimal("100"))
+        assert(status.resultAmount()).isEqualTo("100".pounds())
     }
 
     @Test

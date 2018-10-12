@@ -8,7 +8,7 @@ interface TransactionOperation {
     fun execute(vaultAmount: Money) : TransactionStatus
 }
 
-class SuccessTransaction(private val resultingAmount: BigDecimal) : TransactionStatus {
+class SuccessTransaction(private val resultingAmount: Money) : TransactionStatus {
     override fun whenSuccess(block: (TransactionStatus) -> Unit): TransactionStatus {
         block(this)
         return this
@@ -41,14 +41,14 @@ class FailedTransaction(private val reason: String) : TransactionStatus {
 
     override fun isSuccess() = false
 
-    override fun resultAmount() = BigDecimal.ZERO
+    override fun resultAmount() = Money(BigDecimal.ZERO)
 
     override fun failureReason(): String = reason
 }
 
 interface TransactionStatus {
     fun isSuccess(): Boolean
-    fun resultAmount(): BigDecimal
+    fun resultAmount(): Money
     fun failureReason(): String
     fun status(): String
 

@@ -7,7 +7,7 @@ class DebitTransaction(override val accountId: Long, val transactionAmount: Mone
     override fun execute(vaultAmount: Money): TransactionStatus {
 
         val result = transactionAmount.takeIf { it isLessThan vaultAmount}?.let {
-            SuccessTransaction(resultingAmount = (vaultAmount minus it).value)
+            SuccessTransaction(resultingAmount = vaultAmount minus it)
         } ?: FailedTransaction(reason = "Insufficient funds")
 
         val transaction = Transaction(transactionType = "DEBIT",

@@ -25,7 +25,7 @@ class CreditTransactionTest {
         val status: TransactionStatus = creditTransaction.execute("100".pounds())
 
         assert(status.isSuccess()).isTrue()
-        assert(status.resultAmount()).isEqualTo(BigDecimal("200"))
+        assert(status.resultAmount()).isEqualTo("200".pounds())
     }
 
     @Test

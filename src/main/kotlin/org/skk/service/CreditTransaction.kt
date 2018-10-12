@@ -7,7 +7,7 @@ class CreditTransaction(override val accountId: Long, private val transactionAmo
     override fun execute(vaultAmount: Money): TransactionStatus {
 
         val resultingAmount = vaultAmount plus transactionAmount
-        val transactionStatus = SuccessTransaction(resultingAmount.value)
+        val transactionStatus = SuccessTransaction(resultingAmount)
 
         val transaction = Transaction(accountId = accountId,
                 transactionType = "CREDIT",
