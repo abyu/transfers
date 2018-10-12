@@ -24,7 +24,10 @@ class Transfers(private val transfer: Transfer) {
         val transactionStatus = transfer.forParams(transferParams)
 
         transactionStatus.isSuccess().takeIf { it }?.let {
-            call.respond(HttpStatusCode.OK, """{"status": "Success"}""")
-        } ?: call.respond(HttpStatusCode.UnprocessableEntity, """{"status": "Failed", "reason": "${transactionStatus.failureReason()}"}""")
+            call.respond(HttpStatusCode.OK, TransferSuccessResponse())
+        } ?: call.respond(HttpStatusCode.UnprocessableEntity, TransferFailureResponse(reason = transactionStatus.failureReason()))
     }
 }
+
+data class TransferSuccessResponse(val status: String = "Success")
+data class TransferFailureResponse(val status: String = "Failed", val reason: String)

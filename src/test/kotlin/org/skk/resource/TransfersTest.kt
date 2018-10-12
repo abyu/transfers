@@ -2,11 +2,13 @@ package org.skk.resource
 
 import assertk.all
 import assertk.assertions.isEqualTo
+import assertk.assertions.isTrue
 import io.ktor.application.Application
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.testing.contentType
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
@@ -38,8 +40,9 @@ class TransfersTest {
             }.response
 
             assertk.assert(response).all {
+                assert(actual.contentType().match(ContentType.Application.Json)).isTrue()
                 assert(actual.status()).isEqualTo(HttpStatusCode.OK)
-                assert(actual.content).isEqualTo("""{"status": "Success"}""")
+                assert(actual.content).isEqualTo("""{"status":"Success"}""")
             }
         }
     }
@@ -58,8 +61,9 @@ class TransfersTest {
             }.response
 
             assertk.assert(response).all {
+                assert(actual.contentType().match(ContentType.Application.Json)).isTrue()
                 assert(actual.status()).isEqualTo(HttpStatusCode.UnprocessableEntity)
-                assert(actual.content).isEqualTo("""{"status": "Failed", "reason": "Insufficient funds"}""")
+                assert(actual.content).isEqualTo("""{"status":"Failed","reason":"Insufficient funds"}""")
             }
         }
     }
