@@ -90,7 +90,7 @@ fun Application.main() {
         get("/health") {
             health.get(call)
         }
-        post("/transfer") {
+        post("/transfers") {
             transfer.post(call)
         }
         route("/accounts") {

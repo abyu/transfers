@@ -34,7 +34,7 @@ class TransfersTest {
         every { mockTransfer.forParams(TransferParams(1, 4, BigDecimal("100"))) } returns SuccessTransaction(BigDecimal("100"))
 
         withTestApplication(Application::main) {
-            val response = handleRequest(HttpMethod.Post, "/transfer") {
+            val response = handleRequest(HttpMethod.Post, "/transfers") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody("""{"sourceAccountId": "1", "targetAccountId": "4", "amount": "100"}""")
             }.response
@@ -55,7 +55,7 @@ class TransfersTest {
         every { mockTransfer.forParams(TransferParams(1, 4, BigDecimal("100"))) } returns FailedTransaction("Insufficient funds")
 
         withTestApplication(Application::main) {
-            val response = handleRequest(HttpMethod.Post, "/transfer") {
+            val response = handleRequest(HttpMethod.Post, "/transfers") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody("""{"sourceAccountId": "1", "targetAccountId": "4", "amount": "100"}""")
             }.response
@@ -71,7 +71,7 @@ class TransfersTest {
     @Test
     fun `respond with 400 bad request for an invalid json request`() {
         withTestApplication(Application::main) {
-            val response = handleRequest(HttpMethod.Post, "/transfer") {
+            val response = handleRequest(HttpMethod.Post, "/transfers") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody("""{"an invalid json"}""")
             }.response
@@ -85,7 +85,7 @@ class TransfersTest {
     @Test
     fun `respond with 400 bad request when the json request has non numeric amount`() {
         withTestApplication(Application::main) {
-            val response = handleRequest(HttpMethod.Post, "/transfer") {
+            val response = handleRequest(HttpMethod.Post, "/transfers") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody("""{"sourceAccountId": "1", "targetAccountId": "4", "amount": "not a number"}""")
             }.response
