@@ -14,6 +14,7 @@ import org.skk.domain.AccountEntity
 import org.skk.domain.VaultEntry
 import org.skk.service.Account
 import org.skk.service.AccountCreationException
+import org.skk.service.AccountNotFoundException
 import org.skk.service.Vault
 import java.math.BigDecimal
 
@@ -56,5 +57,29 @@ class AccountTest {
 
         assert(AccountEntity.all()).hasSize(0)
         assert(VaultEntry.all()).hasSize(0)
+    }
+
+    @Test
+    fun `get an account from the db for the given id`() {
+        val mockVault = mockk<Vault>()
+        val account = Account(mockVault)
+        val accountEntity = AccountEntity(name = "Dory")
+        accountEntity.save()
+
+        val persistedAccount = account.getAccount(accountEntity.id)
+
+        assert(persistedAccount).isNotNull {
+            assert(it.actual.name).isEqualTo("Dory")
+        }
+    }
+
+    @Test
+    fun `throw AccountNotFound exception when no account with given id exists`() {
+        val mockVault = mockk<Vault>()
+        val account = Account(mockVault)
+
+        assert {
+            account.getAccount(10)
+        }.thrownError { isInstanceOf(AccountNotFoundException::class) }
     }
 }

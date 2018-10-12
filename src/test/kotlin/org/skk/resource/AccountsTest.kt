@@ -18,6 +18,7 @@ import org.skk.DependencyProvider
 import org.skk.main
 import org.skk.service.Account
 import org.skk.service.AccountCreationException
+import org.skk.service.AccountNotFoundException
 import java.lang.Exception
 import java.math.BigDecimal
 
@@ -63,6 +64,23 @@ class AccountsTest{
     }
 
     @Test
+    fun `get the account with given Id`() {
+        mockkObject(DependencyProvider)
+        val mockAccount = mockk<Account>()
+        every { DependencyProvider.getAccountService() } returns mockAccount
+        every { mockAccount.getAccount(2L) } returns org.skk.model.Account(2, "Nemo")
+
+        withTestApplication(Application::main) {
+            val response = handleRequest(HttpMethod.Get, "/accounts/2").response
+
+            assertk.assert(response).all {
+                assert(actual.status()).isEqualTo(HttpStatusCode.OK)
+                assert(actual.content).isEqualTo("""{"id":2,"name":"Nemo"}""")
+            }
+        }
+    }
+
+    @Test
     fun `respond with 400 bad request for missing json fields`() {
         withTestApplication(Application::main) {
             val response = handleRequest(HttpMethod.Post, "/accounts") {
@@ -72,6 +90,22 @@ class AccountsTest{
 
             assertk.assert(response).all {
                 assert(actual.status()).isEqualTo(HttpStatusCode.BadRequest)
+            }
+        }
+    }
+
+    @Test
+    fun `respond with 404 when an account with given Id does not exist`() {
+        mockkObject(DependencyProvider)
+        val mockAccount = mockk<Account>()
+        every { DependencyProvider.getAccountService() } returns mockAccount
+        every { mockAccount.getAccount(2L) } throws AccountNotFoundException(2L)
+
+        withTestApplication(Application::main) {
+            val response = handleRequest(HttpMethod.Get, "/accounts/2").response
+
+            assertk.assert(response).all {
+                assert(actual.status()).isEqualTo(HttpStatusCode.NotFound)
             }
         }
     }

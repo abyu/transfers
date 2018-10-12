@@ -18,6 +18,14 @@ class Accounts(private val account: Account) {
 
         call.respond(HttpStatusCode.Created, """{"accountId": "$newAccountId"}""")
     }
+
+    suspend fun get(call: ApplicationCall) {
+        val id = call.parameters["id"]?.toLong()
+        id?.let {
+            call.respond(HttpStatusCode.OK, account.getAccount(id))
+        }
+
+    }
 }
 
 data class AccountRequest(val name: String, val initialAmount: BigDecimal)

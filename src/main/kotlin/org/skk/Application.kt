@@ -16,11 +16,13 @@ import io.ktor.jackson.jackson
 import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.post
+import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import org.skk.service.AccountCreationException
+import org.skk.service.AccountNotFoundException
 
 class Application(private val config: Config) {
 
@@ -71,7 +73,11 @@ fun Application.main() {
         }
 
         exception<AccountCreationException> {
-            call.respond(HttpStatusCode.InternalServerError, "Failed while trying to create an account, error: ${it.msg} ")
+            call.respond(HttpStatusCode.InternalServerError, "Failed while trying to create an account, error: ${it.message} ")
+        }
+
+        exception<AccountNotFoundException> {
+            call.respond(HttpStatusCode.NotFound, "${it.message}")
         }
     }
 
@@ -82,8 +88,14 @@ fun Application.main() {
         post("/transfer") {
             transfer.post(call)
         }
-        post("/accounts") {
-            account.post(call)
+        route("/accounts") {
+            post {
+                account.post(call)
+            }
+            get("{id}") {
+                account.get(call)
+            }
         }
+
     }
 }
