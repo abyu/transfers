@@ -63,3 +63,10 @@ kotlin {
         coroutines "enable"
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.skk.MainKt'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
