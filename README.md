@@ -18,3 +18,8 @@ Transfers
  - Run `java -jar build/libs/transfers.jar` to run the app at port 8080
  - Use env variable `APP_PORT` to specify the port
     - `APP_PORT=8081 java -jar build/libs/transfers.jar` runs the app at port 8081
+
+### Dependencies
+ - KTor as the REST framework, provides a stand alone server
+ - Ebean for ORM
+ - App is configured to run on H2 in memory database, this can be configured in the application.yml.
