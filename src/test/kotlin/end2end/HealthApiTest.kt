@@ -1,4 +1,4 @@
-package org.skk.integrationTests
+package end2end
 
 import assertk.assert
 import assertk.assertions.isEqualTo

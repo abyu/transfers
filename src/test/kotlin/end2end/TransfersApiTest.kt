@@ -6,7 +6,6 @@ import assertk.assertions.isEqualTo
 import io.ktor.http.HttpStatusCode
 import khttp.get
 import org.json.JSONObject
-import org.junit.Ignore
 import org.junit.Test
 import java.math.BigDecimal
 
