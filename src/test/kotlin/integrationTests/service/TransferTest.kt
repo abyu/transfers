@@ -7,7 +7,7 @@ import io.ebean.Ebean
 import org.junit.Test
 import org.skk.domain.VaultEntry
 import org.skk.service.Transfer
-import org.skk.service.TransferFailedException
+import org.skk.exceptions.TransferFailedException
 import org.skk.service.TransferParams
 import org.skk.service.Vault
 import java.math.BigDecimal

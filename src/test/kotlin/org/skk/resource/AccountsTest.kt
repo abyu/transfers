@@ -20,9 +20,9 @@ import org.skk.DependencyProvider
 import org.skk.main
 import org.skk.model.AccountBalance
 import org.skk.service.Account
-import org.skk.service.AccountCreationException
-import org.skk.service.AccountNotFoundException
-import org.skk.service.VaultNotFoundException
+import org.skk.exceptions.AccountCreationException
+import org.skk.exceptions.AccountNotFoundException
+import org.skk.exceptions.VaultNotFoundException
 import java.lang.Exception
 import java.math.BigDecimal
 

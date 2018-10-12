@@ -2,7 +2,7 @@ package org.skk.service
 
 import io.ebean.annotation.Transactional
 import io.ebean.annotation.TxType
-import java.lang.RuntimeException
+import org.skk.exceptions.TransferFailedException
 import java.math.BigDecimal
 
 class Transfer(private val vault: Vault) {
@@ -27,5 +27,3 @@ class Transfer(private val vault: Vault) {
 }
 
 data class TransferParams(val senderAccountId: Long, val receiverAccountId: Long, val amount: BigDecimal)
-
-data class TransferFailedException(val msg: String) : RuntimeException(msg)

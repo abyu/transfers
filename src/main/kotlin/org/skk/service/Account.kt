@@ -3,9 +3,11 @@ package org.skk.service
 import io.ebean.annotation.Transactional
 import io.ebean.annotation.TxType
 import org.skk.domain.AccountEntity
+import org.skk.exceptions.AccountCreationException
+import org.skk.exceptions.AccountNotFoundException
+import org.skk.exceptions.VaultNotFoundException
 import org.skk.model.Account
 import org.skk.model.AccountBalance
-import java.lang.RuntimeException
 import java.math.BigDecimal
 
 class Account(private val vault: Vault) {
@@ -45,7 +47,3 @@ class Account(private val vault: Vault) {
         } ?: throw VaultNotFoundException(userAccountId)
     }
 }
-
-data class AccountCreationException(val msg: String?, val exception: Exception) : RuntimeException(msg, exception)
-data class AccountNotFoundException(val id: Long) : RuntimeException("Account with id $id not found")
-data class VaultNotFoundException(val id: Long) : RuntimeException("No vault found for account with id $id")

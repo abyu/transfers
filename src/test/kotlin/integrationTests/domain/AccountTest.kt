@@ -13,10 +13,10 @@ import org.junit.Test
 import org.skk.domain.AccountEntity
 import org.skk.domain.VaultEntry
 import org.skk.service.Account
-import org.skk.service.AccountCreationException
-import org.skk.service.AccountNotFoundException
+import org.skk.exceptions.AccountCreationException
+import org.skk.exceptions.AccountNotFoundException
 import org.skk.service.Vault
-import org.skk.service.VaultNotFoundException
+import org.skk.exceptions.VaultNotFoundException
 import java.math.BigDecimal
 
 class AccountTest {
