@@ -1,16 +1,17 @@
 package org.skk.service
 
+import org.skk.domain.Money
 import org.skk.domain.Transaction
-import java.math.BigDecimal
 
-class CreditTransaction(override val accountId: Long, private val transactionAmount: BigDecimal) : TransactionOperation {
-    override fun execute(vaultAmount: BigDecimal): TransactionStatus {
+class CreditTransaction(override val accountId: Long, private val transactionAmount: Money) : TransactionOperation {
+    override fun execute(vaultAmount: Money): TransactionStatus {
 
-        val transactionStatus = SuccessTransaction(vaultAmount.plus(transactionAmount))
+        val resultingAmount = vaultAmount plus transactionAmount
+        val transactionStatus = SuccessTransaction(resultingAmount.value)
 
         val transaction = Transaction(accountId = accountId,
                 transactionType = "CREDIT",
-                amount = transactionAmount,
+                amount = transactionAmount.value,
                 status = transactionStatus.status()
         )
         transaction.save()

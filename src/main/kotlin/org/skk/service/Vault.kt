@@ -1,5 +1,6 @@
 package org.skk.service
 
+import org.skk.domain.Money
 import org.skk.domain.VaultEntry
 import java.math.BigDecimal
 
@@ -9,7 +10,7 @@ class Vault {
         val vaultEntry = VaultEntry.findByAccountId(accountId)
 
         val transactionStatus = vaultEntry?.let {
-            val status = transactionOperation.execute(it.amount)
+            val status = transactionOperation.execute(Money(it.amount))
 
             status.whenSuccess {
                 vaultEntry.updateAmount(status.resultAmount())

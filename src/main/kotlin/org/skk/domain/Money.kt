@@ -19,6 +19,10 @@ data class Money(val value: BigDecimal) {
 
         return Money(newValue)
     }
+
+    infix fun isLessThan(anotherMoney: Money): Boolean {
+        return value < anotherMoney.value
+    }
 }
 
 fun String.pounds(): Money {

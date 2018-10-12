@@ -13,15 +13,16 @@ import io.mockk.runs
 import io.mockk.slot
 import org.junit.Test
 import org.skk.domain.Transaction
+import org.skk.domain.pounds
 import java.math.BigDecimal
 
 class CreditTransactionTest {
 
     @Test
-    fun `credit adds an amount to given vault amount`() {
-        val creditTransaction = CreditTransaction(2, BigDecimal("100"))
+    fun `credit adds an amount to given vault money`() {
+        val creditTransaction = CreditTransaction(2, "100".pounds())
 
-        val status: TransactionStatus = creditTransaction.execute(BigDecimal("100"))
+        val status: TransactionStatus = creditTransaction.execute("100".pounds())
 
         assert(status.isSuccess()).isTrue()
         assert(status.resultAmount()).isEqualTo(BigDecimal("200"))
@@ -34,9 +35,9 @@ class CreditTransactionTest {
         every { mockEbeanServer.save(capture(slot)) } just runs
 
         MockiEbean.runWithMock(mockEbeanServer) {
-            val creditTransaction = CreditTransaction(2, BigDecimal("100"))
+            val creditTransaction = CreditTransaction(2, "100".pounds())
 
-            val status: TransactionStatus = creditTransaction.execute(BigDecimal("100"))
+            val status: TransactionStatus = creditTransaction.execute("100".pounds())
 
             assert(slot.isCaptured).isTrue()
             assert(slot.captured).all {

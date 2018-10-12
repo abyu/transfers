@@ -11,6 +11,7 @@ import org.skk.service.CreditTransaction
 import org.skk.service.DebitTransaction
 import org.skk.service.Vault
 import org.skk.domain.VaultEntry
+import org.skk.domain.pounds
 import java.math.BigDecimal
 
 class VaultTest {
@@ -20,7 +21,7 @@ class VaultTest {
         val vault = Vault()
         val vaultEntry = VaultEntry(accountId = 2, amount = BigDecimal("200"))
         withVaultEntry(vaultEntry) {
-            val debitTransaction = DebitTransaction(accountId = 2, transactionAmount = BigDecimal("100"))
+            val debitTransaction = DebitTransaction(accountId = 2, transactionAmount = "100".pounds())
 
             val transactionStatus = vault.execute(debitTransaction)
 
@@ -33,7 +34,7 @@ class VaultTest {
         val vault = Vault()
         val vaultEntry = VaultEntry(accountId = 2, amount = BigDecimal("200"))
         withVaultEntry(vaultEntry) {
-            val debitTransaction = DebitTransaction(accountId = 2, transactionAmount = BigDecimal("100"))
+            val debitTransaction = DebitTransaction(accountId = 2, transactionAmount = "100".pounds())
 
             val transactionStatus = vault.execute(debitTransaction)
 
@@ -48,7 +49,7 @@ class VaultTest {
         val vault = Vault()
         val vaultEntry = VaultEntry(accountId = 2, amount = BigDecimal("100"))
         withVaultEntry(vaultEntry) {
-            val debitTransaction = DebitTransaction(accountId = 2, transactionAmount = BigDecimal("150"))
+            val debitTransaction = DebitTransaction(accountId = 2, transactionAmount = "150".pounds())
 
             val transactionStatus = vault.execute(debitTransaction)
 
@@ -63,7 +64,7 @@ class VaultTest {
         val vault = Vault()
         val vaultEntry = VaultEntry(accountId = 2, amount = BigDecimal("200"))
         withVaultEntry(vaultEntry) {
-            val creditTransaction = CreditTransaction(accountId = 2, transactionAmount = BigDecimal("100"))
+            val creditTransaction = CreditTransaction(accountId = 2, transactionAmount = "100".pounds())
 
             val transactionStatus = vault.execute(creditTransaction)
 

@@ -14,15 +14,16 @@ import io.mockk.runs
 import io.mockk.slot
 import org.junit.Test
 import org.skk.domain.Transaction
+import org.skk.domain.pounds
 import java.math.BigDecimal
 
 class DebitTransactionTest {
 
     @Test
     fun `debit transaction debits the amount from the given vault amount`() {
-        val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = BigDecimal("100"))
+        val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = "100".pounds())
 
-        val status = debitTransaction.execute(BigDecimal("200"))
+        val status = debitTransaction.execute("200".pounds())
 
         assert(status.isSuccess()).isTrue()
         assert(status.resultAmount()).isEqualTo(BigDecimal("100"))
@@ -30,9 +31,9 @@ class DebitTransactionTest {
 
     @Test
     fun `debit transaction returns failure result when the amount is more than the given vault amount`() {
-        val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = BigDecimal("400"))
+        val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = "400".pounds())
 
-        val originalVaultAmount = BigDecimal("200")
+        val originalVaultAmount = "200".pounds()
         val status: TransactionStatus = debitTransaction.execute(originalVaultAmount)
 
         assert(status.isSuccess()).isFalse()
@@ -46,9 +47,9 @@ class DebitTransactionTest {
         every { mockEbeanServer.save(capture(slot)) } just runs
 
         MockiEbean.runWithMock(mockEbeanServer) {
-            val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = BigDecimal("100"))
+            val debitTransaction = DebitTransaction(accountId = 1, transactionAmount = "100".pounds())
 
-            val status = debitTransaction.execute(BigDecimal("200"))
+            val status = debitTransaction.execute("200".pounds())
 
             assert(slot.isCaptured).isTrue()
             assert(slot.captured).all {

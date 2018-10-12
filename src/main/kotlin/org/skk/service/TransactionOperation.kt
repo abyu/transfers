@@ -1,10 +1,11 @@
 package org.skk.service
 
+import org.skk.domain.Money
 import java.math.BigDecimal
 
 interface TransactionOperation {
     val accountId: Long
-    fun execute(vaultAmount: BigDecimal) : TransactionStatus
+    fun execute(vaultAmount: Money) : TransactionStatus
 }
 
 class SuccessTransaction(private val resultingAmount: BigDecimal) : TransactionStatus {

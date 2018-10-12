@@ -2,8 +2,10 @@ package org.skk.domain
 
 import assertk.assert
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEqualTo
+import assertk.assertions.isTrue
 import org.junit.Test
 import org.skk.exceptions.IllegalMoneyOperationException
 
@@ -48,10 +50,26 @@ class MoneyTest {
     @Test
     fun `50 pounds minus 100 pounds is illegal`() {
         val fiftyPounds = "50".pounds()
-        val hundredPounds = "80".pounds()
+        val hundredPounds = "100".pounds()
 
         assert {
             fiftyPounds minus hundredPounds
         }.thrownError { isInstanceOf(IllegalMoneyOperationException::class) }
+    }
+
+    @Test
+    fun `20 pounds is less than 100 pounds`() {
+        val twentyPounds = "20".pounds()
+        val hundredPounds = "100".pounds()
+
+        assert(twentyPounds isLessThan hundredPounds).isTrue()
+    }
+
+    @Test
+    fun `80 pounds not less than 40 pounds`() {
+        val eightyPounds = "80".pounds()
+        val fortyPounds = "40".pounds()
+
+        assert(eightyPounds isLessThan fortyPounds).isFalse()
     }
 }
