@@ -3,6 +3,7 @@ package integrationTests.service
 import assertk.assert
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import io.ebean.Ebean
 import org.junit.Test
 import org.skk.domain.AccountEntity
@@ -100,6 +101,32 @@ class VaultTest {
 
             assert(vaultEntry).isNotNull()
             assert(vaultEntry?.amount).isEqualTo(BigDecimal("200"))
+        }
+    }
+
+    @Test
+    fun `returns the available vault amount for the given account id`() {
+        val vault = Vault()
+        val accountEntry = AccountEntity(name = "Nemo")
+        Ebean.save(accountEntry)
+        val vaultEntry = VaultEntry(accountId = accountEntry.id, amount = BigDecimal("200"))
+
+        withDbEntries(listOf(accountEntry, vaultEntry)) {
+            val vaultAmount = vault.getVaultAmount(accountId = accountEntry.id)
+
+            assert(vaultAmount).isEqualTo(BigDecimal("200"))
+        }
+    }
+
+    @Test
+    fun `returns null when no vault found for the given account id`() {
+        val vault = Vault()
+        val accountEntry = AccountEntity(name = "Nemo")
+
+        withDbEntries(listOf(accountEntry)) {
+            val vaultAmount = vault.getVaultAmount(accountId = accountEntry.id)
+
+            assert(vaultAmount).isNull()
         }
     }
 

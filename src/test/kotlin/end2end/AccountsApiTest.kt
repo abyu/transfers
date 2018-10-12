@@ -22,9 +22,25 @@ class AccountsApiTest {
         val accountId = createAnAccount(requestJson)
 
         val accountResponse = khttp.get("$accountsUrl/$accountId")
+        val expectedJson = JSONObject("""{"id": $accountId, "name": "Nemo"}""")
+        assert(accountResponse).all {
+            assert(actual.statusCode).isEqualTo(HttpStatusCode.OK.value)
+            assert(actual.jsonObject.toString()).isEqualTo(expectedJson.toString())
+        }
+    }
+
+    @Test
+    fun `create a new account and retrieve the available balance by the id`() {
+        val requestJson = JSONObject("""{"name": "Nemo", "initialAmount": "200"}""")
+
+        val accountId = createAnAccount(requestJson)
+
+        val accountResponse = khttp.get("$accountsUrl/$accountId/balance")
+        val expectedJson = JSONObject("""{"accountId": $accountId, "balance": 200}""")
 
         assert(accountResponse).all {
             assert(actual.statusCode).isEqualTo(HttpStatusCode.OK.value)
+            assert(actual.jsonObject.toString()).isEqualTo(expectedJson.toString())
         }
     }
 

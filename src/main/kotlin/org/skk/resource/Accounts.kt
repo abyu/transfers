@@ -23,6 +23,13 @@ class Accounts(private val account: Account) {
             call.respond(HttpStatusCode.OK, account.getAccount(it))
         }
     }
+
+    suspend fun getBalance(call: ApplicationCall) {
+        val id = call.parameters["id"]?.toLong()
+        id?.let {
+            call.respond(HttpStatusCode.OK, account.getBalance(accountId = it))
+        }
+    }
 }
 
 data class AccountRequest(val name: String, val initialAmount: BigDecimal)

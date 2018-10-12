@@ -16,6 +16,7 @@ import org.skk.service.Account
 import org.skk.service.AccountCreationException
 import org.skk.service.AccountNotFoundException
 import org.skk.service.Vault
+import org.skk.service.VaultNotFoundException
 import java.math.BigDecimal
 
 class AccountTest {
@@ -70,6 +71,49 @@ class AccountTest {
 
         assert(persistedAccount).isNotNull {
             assert(it.actual.name).isEqualTo("Dory")
+        }
+    }
+
+    @Test
+    fun `get the account balance from the vault for the given id`() {
+        val mockVault = mockk<Vault>()
+        val account = Account(mockVault)
+        val accountEntity = AccountEntity(name = "Dory")
+        accountEntity.save()
+        every { mockVault.getVaultAmount(accountEntity.id) } returns BigDecimal("200")
+
+        val persistedAccount = account.getBalance(accountEntity.id)
+
+        assert(persistedAccount).isNotNull {
+            assert(it.actual.accountId).isEqualTo(accountEntity.id)
+            assert(it.actual.balance).isEqualTo(BigDecimal(200))
+        }
+    }
+
+    @Test
+    fun `throw no vault found exception when not found for the given account id`() {
+        val mockVault = mockk<Vault>()
+        val account = Account(mockVault)
+        val accountEntity = AccountEntity(name = "Dory")
+        accountEntity.save()
+        every { mockVault.getVaultAmount(accountEntity.id) } returns null
+
+        assert{
+            account.getBalance(accountEntity.id)
+        }.thrownError {
+            isInstanceOf(VaultNotFoundException::class)
+        }
+    }
+
+    @Test
+    fun `throw account not found exception when the account does not exist while retrieving the vault amount`() {
+        val mockVault = mockk<Vault>()
+        val account = Account(mockVault)
+
+        assert{
+            account.getBalance(42)
+        }.thrownError {
+            isInstanceOf(AccountNotFoundException::class)
         }
     }
 

@@ -18,9 +18,11 @@ import io.mockk.mockkObject
 import org.junit.Test
 import org.skk.DependencyProvider
 import org.skk.main
+import org.skk.model.AccountBalance
 import org.skk.service.Account
 import org.skk.service.AccountCreationException
 import org.skk.service.AccountNotFoundException
+import org.skk.service.VaultNotFoundException
 import java.lang.Exception
 import java.math.BigDecimal
 
@@ -84,6 +86,23 @@ class AccountsTest{
     }
 
     @Test
+    fun `retrieve the balance of an existing account`() {
+        mockkObject(DependencyProvider)
+        val mockAccount = mockk<Account>()
+        every { DependencyProvider.getAccountService() } returns mockAccount
+        every { mockAccount.getBalance(2L) } returns AccountBalance(2, BigDecimal("200"))
+
+        withTestApplication(Application::main) {
+            val response = handleRequest(HttpMethod.Get, "/accounts/2/balance").response
+
+            assertk.assert(response).all {
+                assert(actual.status()).isEqualTo(HttpStatusCode.OK)
+                assert(actual.content).isEqualTo("""{"accountId":2,"balance":200}""")
+            }
+        }
+    }
+
+    @Test
     fun `respond with 400 bad request for missing json fields`() {
         withTestApplication(Application::main) {
             val response = handleRequest(HttpMethod.Post, "/accounts") {
@@ -109,6 +128,22 @@ class AccountsTest{
 
             assertk.assert(response).all {
                 assert(actual.status()).isEqualTo(HttpStatusCode.NotFound)
+            }
+        }
+    }
+
+    @Test
+    fun `get balance responds with 409 conflice when the vault does not exist yet for an account`() {
+        mockkObject(DependencyProvider)
+        val mockAccount = mockk<Account>()
+        every { DependencyProvider.getAccountService() } returns mockAccount
+        every { mockAccount.getBalance(2L) } throws VaultNotFoundException(2L)
+
+        withTestApplication(Application::main) {
+            val response = handleRequest(HttpMethod.Get, "/accounts/2/balance").response
+
+            assertk.assert(response).all {
+                assert(actual.status()).isEqualTo(HttpStatusCode.Conflict)
             }
         }
     }

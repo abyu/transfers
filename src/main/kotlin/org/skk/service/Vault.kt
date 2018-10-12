@@ -32,6 +32,10 @@ class Vault {
 
         return SuccessTransaction(BigDecimal.ZERO)
     }
+
+    fun getVaultAmount(accountId: Long): BigDecimal? {
+        return VaultEntry.findByAccountId(accountId)?.amount
+    }
 }
 
 

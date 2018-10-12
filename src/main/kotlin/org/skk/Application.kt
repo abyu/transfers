@@ -23,6 +23,7 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import org.skk.service.AccountCreationException
 import org.skk.service.AccountNotFoundException
+import org.skk.service.VaultNotFoundException
 
 class Application(private val config: Config) {
 
@@ -79,6 +80,10 @@ fun Application.main() {
         exception<AccountNotFoundException> {
             call.respond(HttpStatusCode.NotFound, "${it.message}")
         }
+
+        exception<VaultNotFoundException> {
+            call.respond(HttpStatusCode.Conflict, "${it.message}")
+        }
     }
 
     routing {
@@ -94,6 +99,10 @@ fun Application.main() {
             }
             get("{id}") {
                 account.get(call)
+            }
+
+            get("{id}/balance") {
+                account.getBalance(call)
             }
         }
 
