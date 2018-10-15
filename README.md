@@ -11,8 +11,13 @@ Transfers
 
 ### Running API Tests
  - Running API tests needs the server to be running in the background, run the app at port 8080
- - Run `./gradlew end2endTest` to run all api tests
- 
+ - Run the script './runEnd2EndTests.sh'
+    - It builds the app
+    - Runs the app
+    - Runs the end2endTest
+    - Kills the app
+ - If the app is already running in the background, run `./gradlew end2endTest` to run all api tests
+
 ### Running the APP from an executable jar
  - Run `./gradlew clean build` to build the jar at `build/libs/transfers.jar`
  - Run `java -jar build/libs/transfers.jar` to run the app at port 8080
